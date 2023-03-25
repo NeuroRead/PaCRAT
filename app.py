@@ -25,9 +25,9 @@ api = Api(app)                                      # Initializes the API
 #-------------------------#
 
 class Analyze(Resource):                            # Analysis Endpoint Class
-    def post(self):                                 # POST method, takes in a body of text in string form and outputs formatted version
+    def post(self):                                 # POST method
         parser = reqparse.RequestParser()           # Initialize Parser
-        parser.add_argument('text', required=True)  # Request Argument
+        parser.add_argument('text', required=True)  # Expects Argument with Text For Analysis
         args = parser.parse_args()                  # Parse Arguments to Dictionary
         return {'formatted': args['text']}          # Return Formatted Text
 api.add_resource(Analyze, '/analyze')               # Adds endpoint to Flask API
