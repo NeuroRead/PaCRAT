@@ -17,25 +17,23 @@ from flask_restful import Resource, Api, reqparse
 #   INITIALIZE FLASK APP AND API  #
 #---------------------------------#
 
-app = Flask(__name__)
-api = Api(app)
+app = Flask(__name__)                               # Creates Flask application
+api = Api(app)                                      # Initializes the API
 
 #-------------------------#
 #   CONVERSION ENDPOINT   #
 #-------------------------#
 
-class Analyze(Resource):
-    # POST, takes in a body of text in string form and outputs 
-    def post(self):
-        parser = reqparse.RequestParser() # Initialize Parser
-        parser.add_argument('text', required=True) # Request Argument
-        args = parser.parse_args()  # Parse Arguments to Dictionary
-        return {'formatted': args['text']}
-api.add_resource(Analyze, '/analyze')
+class Analyze(Resource):                            # Analysis Endpoint Class
+    def post(self):                                 # POST method, takes in a body of text in string form and outputs formatted version
+        parser = reqparse.RequestParser()           # Initialize Parser
+        parser.add_argument('text', required=True)  # Request Argument
+        args = parser.parse_args()                  # Parse Arguments to Dictionary
+        return {'formatted': args['text']}          # Return Formatted Text
+api.add_resource(Analyze, '/analyze')               # Adds endpoint to Flask API
 
 #------------------------#
 #   RUNS THE FLASK APP   #
 #------------------------#
 
-if __name__ == '__main__':
-    app.run()
+if __name__ == '__main__': app.run()                # Dunder
