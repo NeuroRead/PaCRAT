@@ -1,0 +1,15 @@
+# Copy this to /etc/systemd/system and change the user and other directories!
+
+[Unit]
+Description=uWSGI instance to serve PaCRAT
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/PaCRAT
+Environment="PATH=/home/ubuntu/PaCRAT/venv/bin"
+ExecStart=/home/ubuntu/PaCRAT/venv/bin/uwsgi --ini pacrat.ini
+
+[Install]
+WantedBy=multi-user.target
