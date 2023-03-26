@@ -10,29 +10,33 @@
 #   IMPORTS   #
 #-------------#
 
-from flask import Flask
-from flask_restful import Resource, Api, reqparse
+from typing import Annotated
+from fastapi import Body,FastAPI
 from aenigma import analyzer
 
-#-------------------------------------------#
-#   INITIALIZE FLASK APP, API, AND AENIGMA  #
-#-------------------------------------------#
+#------------------------#
+#   INITIALIZE FastAPI   #
+#------------------------#
 
-app = Flask(__name__)                               # Creates Flask application
-api = Api(app)                                      # Initializes the API
+app = FastAPI()                                     # Creates FastAPI App
+analyzer.initialize_nltk()                          # Downloads tokenizer for Aenigma 
+
+
+#---------------------------#
+#   SANITY CHECK ENDPOINT   #
+#---------------------------#
+
+@app.get("/sanitycheck")                            # Sanity check endpoint to ensure server is accessible
+async def sanity_check():
+    return {"message": "Get request successful"}
 
 #-------------------------#
 #   CONVERSION ENDPOINT   #
 #-------------------------#
 
-class Analyze(Resource):                            # Analysis Endpoint Class
-    def post(self):                                 # POST method
-        parser = reqparse.RequestParser()           # Initialize Parser
-        parser.add_argument('text', required=True)  # Expects Argument with Text For Analysis
-        args = parser.parse_args()                  # Parse Arguments to Dictionary
-        formatted = format_complexity(args['text']) # Call format_complexity to add complexity stratification
-        return {'formatted': formatted}             # Return Formatted Text
-api.add_resource(Analyze, '/analyze')               # Adds endpoint to Flask API
+@app.post("/analyze")                               # Text Processing Endpoint
+async def analyze(text: Annotated[str, Body(embed=True)]):
+    return {"formatted": format_complexity(text)}   # Returns results of format_complexity()
 
 #--------------------#
 #   HELPER METHODS   #
@@ -47,11 +51,3 @@ def format_complexity(text: str) -> str:            # Sentence Complexity Format
             f"<span class='level{lvl}'>{item}</span>"
             )
     return text                                     # Return formatted text
-
-#------------------------#
-#   RUNS THE FLASK APP   #
-#------------------------#
-
-if __name__ == '__main__':
-    analyzer.initialize_nltk()                      # Downloads tokenizer for Aenigma 
-    app.run(host = '0.0.0.0')                              # Runs Flask app
