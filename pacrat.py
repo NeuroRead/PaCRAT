@@ -54,4 +54,4 @@ def format_complexity(text: str) -> str:            # Sentence Complexity Format
 
 if __name__ == '__main__':
     analyzer.initialize_nltk()                      # Downloads tokenizer for Aenigma 
-    app.run('0.0.0.0')                                       # Runs Flask app
+    app.run(host = '0.0.0.0')                              # Runs Flask app
