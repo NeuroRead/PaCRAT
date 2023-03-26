@@ -12,6 +12,7 @@
 
 from typing import Annotated
 from fastapi import Body,FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from aenigma import analyzer
 
 #------------------------#
@@ -19,7 +20,16 @@ from aenigma import analyzer
 #------------------------#
 
 app = FastAPI()                                     # Creates FastAPI App
+origins = ["*"]
 analyzer.initialize_nltk()                          # Downloads tokenizer for Aenigma 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 #---------------------------#
