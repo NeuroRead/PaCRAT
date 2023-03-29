@@ -55,9 +55,9 @@ async def analyze(text: Annotated[str, Body(embed=True)]):
 def format_complexity(text: str) -> str:            # Sentence Complexity Formatting Helper
     rcs_vals = analyzer.generate_rcs_list(text)     # Calls Aenigma to get RCS scores of sentences
     for (item, rcs) in rcs_vals:                    # Iterate through original text and add spans (preserves whitespace)
-        lvl = int((1-rcs)*6)                        # Level 1 is most emphasized/complex, 6 is least
+        lvl = int((1-(rcs))*5) + 1                  # Level 1 is most emphasized/complex, 6 is least
         text = text.replace(                        # Replace sentence in text with formatted sentence
             item,
-            f"<span class='pacrat--L{lvl}'>{item}</span>"
+            f"<span class='pacrat L{lvl}'>{item}</span>"
             )
     return text                                     # Return formatted text
