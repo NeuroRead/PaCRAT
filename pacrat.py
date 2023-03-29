@@ -58,6 +58,6 @@ def format_complexity(text: str) -> str:            # Sentence Complexity Format
         lvl = int((1-rcs)*6)                        # Level 1 is most emphasized/complex, 6 is least
         text = text.replace(                        # Replace sentence in text with formatted sentence
             item,
-            f"<span class='level{lvl}'>{item}</span>"
+            f"<span class='pacrat--L{lvl}'>{item}</span>"
             )
     return text                                     # Return formatted text
